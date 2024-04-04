@@ -1,0 +1,262 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM//I70sI/Yfsxhe6Bp57zM",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/manshacirrus/Object-detection/blob/main/one\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 19,
+      "metadata": {
+        "id": "mOpaVchqSB8i"
+      },
+      "outputs": [],
+      "source": [
+        "import tensorflow as tf"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from tensorflow.keras import applications"
+      ],
+      "metadata": {
+        "id": "0XgdhHE_SLU7"
+      },
+      "execution_count": 20,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model = applications.ResNet50(include_top = True, weights = 'imagenet')"
+      ],
+      "metadata": {
+        "id": "XtFyrRJVSa9F"
+      },
+      "execution_count": 21,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model.inputs"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "r3p92MJJS2UX",
+        "outputId": "22786efb-5ddd-4ec4-eadc-310eb5a697a2"
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[<KerasTensor: shape=(None, 224, 224, 3) dtype=float32 (created by layer 'input_2')>]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 22
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import cv2"
+      ],
+      "metadata": {
+        "id": "atn9duxiTWSz"
+      },
+      "execution_count": 23,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "image = cv2.imread(r'/content/boat.jpg')"
+      ],
+      "metadata": {
+        "id": "6ujbfY7RTbEK"
+      },
+      "execution_count": 24,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "image.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "YijhKXUPTzpY",
+        "outputId": "f61a95e2-ccf0-4609-a451-c34d495c6737"
+      },
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(798, 1200, 3)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 25
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "image = cv2.resize(image,(224,224))"
+      ],
+      "metadata": {
+        "id": "L4xW1h1ZVik0"
+      },
+      "execution_count": 26,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "image.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xqOve6iHVyWK",
+        "outputId": "e5792ac1-39f3-4bed-bbd4-a25f259cd532"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(224, 224, 3)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 27
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "plt.imshow(image)\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "h-eW3EIbV-w6"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "CbBZCu0cirjK"
+      },
+      "execution_count": 31,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "image = tf.expand_dims(image,0)"
+      ],
+      "metadata": {
+        "id": "QkVSRu3hWZ17"
+      },
+      "execution_count": 29,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "pred = model.predict(image)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9DTLb19iWggh",
+        "outputId": "4ebd213f-eb54-4350-a2e3-5cbfe4f33a30"
+      },
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "1/1 [==============================] - 1s 1s/step\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "tf.keras.applications.imagenet_utils.decode_predictions(pred, top = 7)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0xAPaxX2Wtwl",
+        "outputId": "0ee9856f-4f8a-4484-d19d-af8a1308fdcc"
+      },
+      "execution_count": 31,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[[('n04273569', 'speedboat', 0.6095232),\n",
+              "  ('n03344393', 'fireboat', 0.061186414),\n",
+              "  ('n02951358', 'canoe', 0.038641747),\n",
+              "  ('n09421951', 'sandbar', 0.038274035),\n",
+              "  ('n03873416', 'paddle', 0.036675364),\n",
+              "  ('n03662601', 'lifeboat', 0.029093966),\n",
+              "  ('n09332890', 'lakeside', 0.022428611)]]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 31
+        }
+      ]
+    }
+  ]
+}
